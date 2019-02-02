@@ -1,6 +1,6 @@
 {
     "name": "@cogizmo/sajax-content",
-    "version": "0.2.1-alpha",
+    "version": "0.1.0",
     "description": "Custom Element that invokes an element's method when a specified event is received.",
     "main": "src/component.js",
     "scripts": {
@@ -9,7 +9,13 @@
       "build:copy": "cpy \"**/?(*)?(.*)\" \"../build\" --cwd=src --parents && npm run build:copy2",
       "build:copy2": "cpy \"+(test|samples)/**/*?(.*)\" \"./build\" --parents && npm run build:docs",
       "build:docs": "cpy \"!(README).md\" \"./build/doc\" && npm run build:license",
-      "build:license": "cpy \"+(README|LICENSE)?(.*)\" \"./build/\""
+      "build:license": "cpy \"+(README|LICENSE)?(.*)\" \"./build/\"",
+      "add:patch": "cd build && npm version patch && npm run pkg:patch",
+      "preversion": "npm run build",
+      "postversion": "cd build && npm version --",
+      "pkg:patch": "cd build && npm version patch",
+      "v": "npm version -- && npm run v2 --",
+      "v2": "cd build && npm version --"
     },
     "repository": {
       "type": "git",
