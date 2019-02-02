@@ -1,5 +1,5 @@
 # Logs
-logs
+log
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -20,11 +20,8 @@ coverage
 # nyc test coverage
 .nyc_output
 
-# Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
+# Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
-
-# Bower dependency directory (https://bower.io/)
-bower_components
 
 # node-waf configuration
 .lock-wscript
@@ -56,6 +53,23 @@ typings/
 
 # dotenv environment variables file
 .env
+.env.test
 
-# next.js build output
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+
+# Build output
+build/
 .next
+.nuxt
+dist/
+.vuepress/dist
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
