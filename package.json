@@ -40,8 +40,5 @@
     },
     "publishConfig": {
       "access": "public"
-    },
-    "dependencies": {
-      "@polymer/iron-ajax": "^3.0.1"
     }
-  }
+}
