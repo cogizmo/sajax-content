@@ -1,52 +1,52 @@
 {
-    "name": "@cogizmo/sajax-content",
-    "version": "0.1.0",
-    "description": "Custom Element that invokes an element's method when a specified event is received.",
-    "main": "src/component.js",
-    "scripts": {
-      "preversion": "npm run clean && npm test",
-      "clean": "node_modules/.bin/rimraf ./build/!(node_modules)",
-      "clean:pkg": "node_modules/.bin/rimraf ./build/*",
-      "build": "npm run build:copy",
-      "build:copy": "cpy \"**/?(*)?(.*)\" \"../build\" --cwd=src --parents && npm run build:copy2",
-      "build:copy2": "cpy \"+(test|samples)/**/*?(.*)\" \"./build\" --parents && npm run build:docs",
-      "build:docs": "cpy \"!(README).md\" \"./build/doc\" && npm run build:license",
-      "build:license": "cpy \"+(README|LICENSE)?(.*)\" \"./build/\"",
-      "pretest": "npm run build && cd build && npm install --only=dev",
-      "test": "cd build && npm test",
-      "patch": "npm version patch && cd build && npm version patch",
-      "minor": "npm version minor && cd build && npm version minor",
-      "major": "npm version major && cd build && npm version major",
-      "postversion": "git push origin --all && git push origin --tags"
-    },
-    "repository": {
-      "type": "git",
-      "url": "git+https://github.com/cogizmo/sajax-content.git"
-    },
-    "keywords": [
-      "web-components",
-      "custom-elements",
-      "javascript",
-      "js",
-      "vanilla-js"
-    ],
-    "author": "Donald Lee Atkinson <fuzzicallogic@outlook.com>",
-    "license": "ISC",
-    "bugs": {
-      "url": "https://github.com/cogizmo/sajax-content/issues"
-    },
-    "homepage": "https://github.com/cogizmo/sajax-content#README.md",
-    "files": [
-      "/LICENSE",
-      "/README.md",
-      "/src/Cogizmo.js",
-      "/src/Cogizmo.js"
-    ],
-    "devDependencies": {
-      "cpy-cli": "^2.0.0",
-      "rimraf": "^2.6.3"
-    },
-    "publishConfig": {
-      "access": "public"
-    }
+  "name": "@cogizmo/sajax-content",
+  "version": "0.1.0",
+  "description": "Custom Element that invokes an element's method when a specified event is received.",
+  "main": "src/component.js",
+  "scripts": {
+    "preversion": "npm run clean && npm test",
+    "clean": "node_modules/.bin/rimraf \"./build/!(node_modules)\"",
+    "clean:pkg": "node_modules/.bin/rimraf ./build/*",
+    "build": "npm run build:copy",
+    "build:copy": "cpy \"**/?(*)?(.*)\" \"../build\" --cwd=src --parents && npm run build:copy2",
+    "build:copy2": "cpy \"+(test|samples)/**/*?(.*)\" \"./build\" --parents && npm run build:docs",
+    "build:docs": "cpy \"!(README).md\" \"./build/doc\" && npm run build:license",
+    "build:license": "cpy \"+(README|LICENSE)?(.*)\" \"./build/\"",
+    "pretest": "npm run build && cd build && npm install --only=dev",
+    "test": "cd build && npm test",
+    "patch": "npm version patch && cd build && npm version patch",
+    "minor": "npm version minor && cd build && npm version minor",
+    "major": "npm version major && cd build && npm version major",
+    "postversion": "git push origin --all && git push origin --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cogizmo/sajax-content.git"
+  },
+  "keywords": [
+    "web-components",
+    "custom-elements",
+    "javascript",
+    "js",
+    "vanilla-js"
+  ],
+  "author": "Donald Lee Atkinson <fuzzicallogic@outlook.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cogizmo/sajax-content/issues"
+  },
+  "homepage": "https://github.com/cogizmo/sajax-content#README.md",
+  "files": [
+    "/LICENSE",
+    "/README.md",
+    "/src/Cogizmo.js",
+    "/src/Cogizmo.js"
+  ],
+  "devDependencies": {
+    "cpy-cli": "^2.0.0",
+    "rimraf": "^2.6.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }
