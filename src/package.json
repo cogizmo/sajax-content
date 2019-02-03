@@ -5,7 +5,8 @@
     "main": "component.mjs",
     "scripts": {
       "pretest": "node_modules/.bin/rimraf ./log",
-      "test": "npm run test:chrome && npm run test:firefox",
+      "text": "exit 1",
+      "test:all": "npm run test:chrome && npm run test:firefox",
       "test:chrome": "nightwatch --config ./test/nightwatch.json --env chrome ./test/test-module/unit.js",
       "test:firefox": "nightwatch --config ./test/nightwatch.json --env firefox ./test/test-module/unit.js"
     },
