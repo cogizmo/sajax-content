@@ -4,7 +4,7 @@
     "description": "Custom Element that invokes an element's method when a specified event is received.",
     "main": "src/component.js",
     "scripts": {
-      "preversion": "npm run clear && npm test",
+      "preversion": "npm run clean && npm test",
       "clean": "node_modules/.bin/rimraf ./build/!(node_modules)",
       "clean:pkg": "node_modules/.bin/rimraf ./build/*",
       "build": "npm run build:copy",
