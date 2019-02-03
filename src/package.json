@@ -8,7 +8,8 @@
       "test": "exit 1",
       "test:all": "npm run test:chrome && npm run test:firefox",
       "test:chrome": "nightwatch --config ./test/nightwatch.json --env chrome ./test/test-module/unit.js",
-      "test:firefox": "nightwatch --config ./test/nightwatch.json --env firefox ./test/test-module/unit.js"
+      "test:firefox": "nightwatch --config ./test/nightwatch.json --env firefox ./test/test-module/unit.js",
+      "postversion": "npm publish"
     },
     "repository": {
       "type": "git",
