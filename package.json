@@ -16,7 +16,8 @@
       "test": "cd build && npm test",
       "patch": "npm version patch && cd build && npm version patch",
       "minor": "npm version minor && cd build && npm version minor",
-      "major": "npm version major && cd build && npm version major"
+      "major": "npm version major && cd build && npm version major",
+      "postversion": "git push origin --all && git push origin --tags"
     },
     "repository": {
       "type": "git",
