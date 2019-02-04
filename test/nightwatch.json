@@ -3,11 +3,11 @@
         "./test/unit"
     ],
     "unit_tests_mode": false,
-    "output_folder": "./log",
+    "output_folder": "../log",
 
     "webdriver": {
         "start_process": true,
-        "log_path": "./log"
+        "log_path": "../log"
     },
 
     "test_runner" : {
