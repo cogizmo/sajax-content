@@ -5,10 +5,10 @@
     "main": "component.mjs",
     "scripts": {
       "pretest": "node_modules/.bin/rimraf ./log",
-      "test": "exit 1",
+      "test": "npm run test:chrome",
       "test:all": "npm run test:chrome && npm run test:firefox",
-      "test:chrome": "nightwatch --config ./test/nightwatch.json --env chrome ./test/test-module/unit.js",
-      "test:firefox": "nightwatch --config ./test/nightwatch.json --env firefox ./test/test-module/unit.js",
+      "test:chrome": "nightwatch --config ./test/nightwatch.json --env chrome",
+      "test:firefox": "nightwatch --config ./test/nightwatch.json --env firefox",
       "postversion": "npm publish"
     },
     "repository": {
