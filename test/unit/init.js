@@ -18,7 +18,7 @@ describe('Unit Tests', () => {
         done();
     });
 
-    it('is a dummy test', (client) => {
+    it('is a dummy test', client => {
         client.assert.ok(true);
     });
 });

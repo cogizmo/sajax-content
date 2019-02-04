@@ -1,5 +1,9 @@
 {
-    "src_folders": ["test"],
+    "src_folders": [
+        "./test/unit",
+        "./test/behavior",
+        "./test/acceptance"
+    ],
     "unit_tests_mode": false,
     "output_folder": "./log",
 

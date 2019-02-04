@@ -7,7 +7,7 @@
       "pretest": "node_modules/.bin/rimraf ./log",
       "test": "npm run test:chrome",
       "test:all": "npm run test:chrome && npm run test:firefox",
-      "test:chrome": "nightwatch --config ./test/nightwatch.json --env chrome",
+      "test:chrome": "nightwatch --verbose --config ./test/nightwatch.json --env chrome",
       "test:firefox": "nightwatch --config ./test/nightwatch.json --env firefox",
       "postversion": "npm publish"
     },
