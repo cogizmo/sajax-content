@@ -9,7 +9,9 @@
     "test:all": "npm run test:chrome && npm run test:firefox",
     "test:chrome": "nightwatch --verbose --config ./test/nightwatch.json --env chrome",
     "test:firefox": "nightwatch --config ./test/nightwatch.json --env firefox",
-    "postversion": "npm publish"
+    "postversion": "npm publish",
+    "postpublish": "cpy \"./package.json\" \"../src\" && cd .. && npm run git:pkg && npm run git:push",
+
   },
   "repository": {
     "type": "git",
