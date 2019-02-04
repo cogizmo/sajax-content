@@ -17,7 +17,9 @@
     "patch": "npm version patch && cd build && npm version patch",
     "minor": "npm version minor && cd build && npm version minor",
     "major": "npm version major && cd build && npm version major",
-    "postversion": "git push origin --all && git push origin --tags"
+    "postversion": "npm run git:pkg && cpy \"./build/package.json\" \"./src\"",
+    "git:pkg": "git commit -m \"bump version\" && npm run git:push",
+    "git:push": "git push origin --all && git push origin --tags"
   },
   "repository": {
     "type": "git",
