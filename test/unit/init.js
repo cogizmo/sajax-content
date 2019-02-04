@@ -1,5 +1,3 @@
-import { isMainThread } from "worker_threads";
-
 describe('Unit Tests', () => {
 
     before((client, done) => {
