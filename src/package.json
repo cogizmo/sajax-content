@@ -1,6 +1,6 @@
 {
   "name": "@cogizmo/sajax-content",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Custom element that transcludes HTML content into the current HTMLDocument.",
   "main": "component.mjs",
   "scripts": {
