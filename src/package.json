@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/cogizmo/sajax-content#README.md",
   "files": [
-    "/src/*.+(html|js|css)",
+    "/*.+(html|js|css)",
     "/LICENSE?(.*)",
     "/README?(.*)",
     "+(samples|templates|test)/**/*?(.*)"
