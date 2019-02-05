@@ -1,6 +1,6 @@
 {
   "name": "@cogizmo/sajax-content",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "Custom Element that invokes an element's method when a specified event is received.",
   "main": "src/component.js",
   "scripts": {

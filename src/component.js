@@ -113,7 +113,7 @@
             return false;
         }
 
-        onAutoRequestChanged(newValue, oldValue) {
+        onAutoChanged(newValue, oldValue) {
             _PROPS_.get(this).auto = this.hasAttribute('auto');
             console.log(`<sajax-content> Auto changed`)
 
