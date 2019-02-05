@@ -47,6 +47,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@cogizmo/cogizmo": "next"
+    "@cogizmo/cogizmo": "latest"
   }
 }
