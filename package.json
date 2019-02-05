@@ -9,7 +9,7 @@
     "clean:all": "node_modules/.bin/rimraf ./build/*",
     "build": "npm run build:copy",
     "build:copy": "cpy \"**/?(*)?(.*)\" \"../build\" --cwd=src --parents && npm run build:copy2",
-    "build:copy2": "cpy \"+(test|samples)/**/*?(.*)\" \"./build\" --parents && npm run build:docs",
+    "build:copy2": "cpy \"+(test|example)/**/*?(.*)\" \"./build\" --parents && npm run build:docs",
     "build:docs": "cpy \"!(README).md\" \"./build/doc\" && npm run build:license",
     "build:license": "cpy \"+(README|LICENSE)?(.*)\" \"./build/\"",
     "pretest": "npm run build && cd build && npm install --only=dev",
@@ -49,5 +49,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "config": {
+      "jimmy": "minor"
   }
 }
