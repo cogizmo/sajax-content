@@ -171,16 +171,20 @@
             throw new TypeError('XMLHTTPRequest did not return a detail object.');
         if (!event.detail.response)
             throw new TypeError('XMLHTTPRequest does not contain any response data');
-        var doc = event.detail.response;
-        if (!(doc instanceof HTMLDocument))
-            throw new TypeError('XMLHTTPRequest did not return an HTMLDocument');
 
-        if (doc) {
+        event.detail.text().then(html => {
+            return new DOMParser().parseFromString(html, 'text/html');
+        })
+        .then(doc => {
             document.addEventListener('sajax-success', forwardDefaultAction());
             this.addEventListener('sajax-success', onImportDocument);
-            //console.log('Firing Success Event');
-            this.fire('sajax-success', doc.body.children, makePreventableEvent.call(this));
-        }
+            this.dispatchEvent(new CustomEvent('sajax-success', {
+                bubbles: true,
+                composed: true,
+                cancelable: true,
+                detail: doc.body.children
+            }));
+        })
     }
 
     function onImportDocument(event) {
@@ -282,12 +286,21 @@
     function loadExternalDocument() {
         this.state = 'requesting';
         this.addEventListener('response', onResponse);
-        if (this.src === '#') {
-
-        }
-        else {
-            this.$.REQUEST.generateRequest();
-        }
+        fetch(this.src, {
+            headers: {
+                'Content-Type': 'text/html'
+            }
+        })
+        .then(response => {
+            setTimeout(() => {
+                this.dispatchEvent(new CustomEvent('response', {
+                    bubbles: true,
+                    composed: true,
+                    cancelable: true,
+                    detail: response
+                }));
+            }, 0);
+        });
     }
 
 // -----------------------------------------------------------------------------
@@ -327,7 +340,9 @@
             // This is a one time forward... for this event only.
                 document.removeEventListener(event.type, handler);
                 if (!event.defaultPrevented) {
-                    context.fire(event.type, event.detail, bindEventToNode.call(context, LOCAL_EVENT));
+                    let ev = bindEventToNode.call(context, LOCAL_EVENT);
+                    ev.detail = event.detail;
+                    context.dispatchEvent(new CustomEvent(event.type, ev));
                 }
             }
         };
