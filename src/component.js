@@ -26,10 +26,12 @@
 
     const _PROPS_ = new WeakMap();
     class SAjaxContent extends Cogizmo {
-        static get is() { '[[$infusion.elementname]]' }
+        static get is() { return 'sajax-content'; }
 
         constructor() {
             super();
+
+            _PROPS_.set(this, Object.create(null));
         }
 
         connectedCallback() {
