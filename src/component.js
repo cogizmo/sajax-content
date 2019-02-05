@@ -44,8 +44,16 @@
             super.disconnectedCallback();
         }
 
+        get src() {
+            return _PROPS_.get(this).src;
+        }
+
+        get auto() {
+            return _PROPS_.get(this).auto;
+        }
+
         static get observedAttributes() {
-            return ['src', 'when', 'time', 'state', 'initialized', 'autoe'];
+            return ['src', 'when', 'time', 'state', 'initialized', 'auto'];
         }
 
         attributeChangedCallback(name, old, value) {
@@ -54,22 +62,14 @@
                 super.attributeChangedCallback(name, old, value);
 
             switch(name) {
-            case "src":
-                this.onURLChanged(value, old);
-                break;
             case "when":
                 break;
             case "time":
                 this.isTimeToRequest(value, old);
                 break;
             case "state":
-            break;
+                break;
             case "initialized":
-            break;
-            case "src":
-            break;
-            case "auto":
-                this.onAutoRequestChanged(value, old)
                 break;
             }
         }
@@ -114,12 +114,18 @@
         }
 
         onAutoRequestChanged(newValue, oldValue) {
+            _PROPS_.get(this).auto = this.hasAttribute('auto');
+            console.log(`<sajax-content> Auto changed`)
+
             if (newValue && this.src && !this.state) {
                 loadExternalDocument.call(this);
             }
         }
 
-        onURLChanged(newValue, oldValue) {
+        onSrcChanged(newValue, oldValue) {
+            _PROPS_.get(this).src = newValue;
+
+            console.log(`<sajax-content>: Src changed => ${newValue}`)
             if (this._auto && newValue && !this.state) {
                 loadExternalDocument.call(this);
             }
