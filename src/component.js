@@ -328,10 +328,10 @@
         // Chrome uses srcElement
             var context = event.srcElement || event.originalTarget;
         // IE handing -> srcElement is not the polymer element.
-            if (!context || !context.fire) {
+            if (!context || !context.dispatchEvent) {
                 context = event.target;
             // FireFox -> uses originalTarget instead
-                if (!context || !context.fire)
+                if (!context || !context.dispatchEvent)
                     context = event.originalTarget;
             }
 
