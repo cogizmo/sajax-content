@@ -33,7 +33,7 @@
     "/*.+(html|js|css)",
     "/LICENSE?(.*)",
     "/README?(.*)",
-    "+(samples|templates|test)/**/*?(.*)"
+    "+(example|doc|test)/**/*?(.*)"
   ],
   "devDependencies": {
     "chromedriver": "^2.45.0",
