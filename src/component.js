@@ -115,7 +115,6 @@
 
         onAutoChanged(newValue, oldValue) {
             _PROPS_.get(this).auto = this.hasAttribute('auto');
-            console.log(`<sajax-content> Auto changed`)
 
             if (newValue && this.src && !this.state) {
                 loadExternalDocument.call(this);
@@ -125,7 +124,6 @@
         onSrcChanged(newValue, oldValue) {
             _PROPS_.get(this).src = newValue;
 
-            console.log(`<sajax-content>: Src changed => ${newValue}`)
             if (this._auto && newValue && !this.state) {
                 loadExternalDocument.call(this);
             }
