@@ -169,7 +169,7 @@
     // Check for Error Conditions
         if ('object' !== typeof event.detail)
             throw new TypeError('XMLHTTPRequest did not return a detail object.');
-        if (!event.detail.response)
+        if (!event.detail)
             throw new TypeError('XMLHTTPRequest does not contain any response data');
 
         event.detail.text().then(html => {
