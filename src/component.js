@@ -115,7 +115,6 @@
 
         onAutoChanged(newValue, oldValue) {
             _PROPS_.get(this).auto = this.hasAttribute('auto');
-            console.log(`<sajax-content> Auto changed`)
 
             if (newValue && this.src && !this.state) {
                 loadExternalDocument.call(this);
@@ -125,7 +124,6 @@
         onSrcChanged(newValue, oldValue) {
             _PROPS_.get(this).src = newValue;
 
-            console.log(`<sajax-content>: Src changed => ${newValue}`)
             if (this._auto && newValue && !this.state) {
                 loadExternalDocument.call(this);
             }
@@ -173,16 +171,20 @@
             throw new TypeError('XMLHTTPRequest did not return a detail object.');
         if (!event.detail.response)
             throw new TypeError('XMLHTTPRequest does not contain any response data');
-        var doc = event.detail.response;
-        if (!(doc instanceof HTMLDocument))
-            throw new TypeError('XMLHTTPRequest did not return an HTMLDocument');
 
-        if (doc) {
+        event.detail.text().then(html => {
+            return new DOMParser().parseFromString(html, 'text/html');
+        })
+        .then(doc => {
             document.addEventListener('sajax-success', forwardDefaultAction());
             this.addEventListener('sajax-success', onImportDocument);
-            //console.log('Firing Success Event');
-            this.fire('sajax-success', doc.body.children, makePreventableEvent.call(this));
-        }
+            this.dispatchEvent(new CustomEvent('sajax-success', {
+                bubbles: true,
+                composed: true,
+                cancelable: true,
+                detail: doc.body.children
+            }));
+        })
     }
 
     function onImportDocument(event) {
@@ -208,45 +210,51 @@
             }
             document.addEventListener('sajax-import', forwardDefaultAction());
             this.addEventListener('sajax-import', onAttachNodes);
-            //console.log('Firing Import Event');
 
-            this.fire('sajax-import', rNodes, makePreventableEvent.call(this));
+            this.dispatchEvent(new CustomEvent('sajax-import', {
+                bubbles: true,
+                composed: true,
+                cancelable: true,
+                detail: rNodes
+            }))
         }
     }
 
     function onAttachNodes(event) {
         if (!event.cancelable) {
             var ref, isRefParent,
-                p = Polymer.dom(this).node.parentElement;
+                p = this.parentElement;
             if (p === null || p === undefined)
-                p = Polymer.dom(this).node.composedParent;
+                p = this.parentNode.host;
 
-            ref = Polymer.dom(this).nextElementSibling === null ? p : Polymer.dom(this).nextElementSibling;
-            isRefParent = ref === Polymer.dom(this).node.parentElement;
+            ref = this.nextElementSibling || p;
+            isRefParent = ref === this.parentElement;
 
             event.detail.forEach(function(node, k, a) {
                 if ("object" === typeof node) {
                     try {
                     if (isRefParent)
-                        Polymer.dom(ref).appendChild(node);
+                        ref.appendChild(node);
                     else if (p)
-                        Polymer.dom(p).insertBefore(node, ref);
+                        p.insertBefore(node, ref);
                     }
                     catch (ex) {
                         console.log(ex);
                     }
                 }
             });
-            Polymer.dom.flush();
 
             document.addEventListener('sajax-attach', forwardDefaultAction());
             this.addEventListener('sajax-attach', onRemoveThis);
-            this.fire('sajax-attach', {
-                parent: ref || p,
-                attached: event.detail
-            }, makePreventableEvent.call(this));
-
-
+            this.dispatchEvent(new CustomEvent('sajax-attach', {
+                bubbles: true,
+                composed: true,
+                cancelable: true,
+                detail: {
+                    parent: ref || p,
+                    attached: event.detail
+                }
+            }));
         }
     }
 
@@ -254,12 +262,12 @@
         if (!event.cancelable) {
             this.removeEventListener('sajax-attach', onRemoveThis);
 
-            var parent = Polymer.dom(this).node.parentElement;
+            var parent = this.parentElement;
             if (parent === null || parent === undefined) {
-                parent = Polymer.dom(this).node.composedParent;
+                parent = this.parentNode.host;
             }
             if (parent) {
-                Polymer.dom(parent).removeChild(this);
+                parent.removeChild(this);
             }
             else ;
         }
@@ -278,12 +286,21 @@
     function loadExternalDocument() {
         this.state = 'requesting';
         this.addEventListener('response', onResponse);
-        if (this.src === '#') {
-
-        }
-        else {
-            this.$.REQUEST.generateRequest();
-        }
+        fetch(this.src, {
+            headers: {
+                'Content-Type': 'text/html'
+            }
+        })
+        .then(response => {
+            setTimeout(() => {
+                this.dispatchEvent(new CustomEvent('response', {
+                    bubbles: true,
+                    composed: true,
+                    cancelable: true,
+                    detail: response
+                }));
+            }, 0);
+        });
     }
 
 // -----------------------------------------------------------------------------
@@ -323,7 +340,9 @@
             // This is a one time forward... for this event only.
                 document.removeEventListener(event.type, handler);
                 if (!event.defaultPrevented) {
-                    context.fire(event.type, event.detail, bindEventToNode.call(context, LOCAL_EVENT));
+                    let ev = bindEventToNode.call(context, LOCAL_EVENT);
+                    ev.detail = event.detail;
+                    context.dispatchEvent(new CustomEvent(event.type, ev));
                 }
             }
         };
