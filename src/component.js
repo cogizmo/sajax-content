@@ -208,45 +208,51 @@
             }
             document.addEventListener('sajax-import', forwardDefaultAction());
             this.addEventListener('sajax-import', onAttachNodes);
-            //console.log('Firing Import Event');
 
-            this.fire('sajax-import', rNodes, makePreventableEvent.call(this));
+            this.dispatchEvent(new CustomEvent('sajax-import', {
+                bubbles: true,
+                composed: true,
+                cancelable: true,
+                detail: rNodes
+            }))
         }
     }
 
     function onAttachNodes(event) {
         if (!event.cancelable) {
             var ref, isRefParent,
-                p = Polymer.dom(this).node.parentElement;
+                p = this.parentElement;
             if (p === null || p === undefined)
-                p = Polymer.dom(this).node.composedParent;
+                p = this.parentNode.host;
 
-            ref = Polymer.dom(this).nextElementSibling === null ? p : Polymer.dom(this).nextElementSibling;
-            isRefParent = ref === Polymer.dom(this).node.parentElement;
+            ref = this.nextElementSibling || p;
+            isRefParent = ref === this.parentElement;
 
             event.detail.forEach(function(node, k, a) {
                 if ("object" === typeof node) {
                     try {
                     if (isRefParent)
-                        Polymer.dom(ref).appendChild(node);
+                        ref.appendChild(node);
                     else if (p)
-                        Polymer.dom(p).insertBefore(node, ref);
+                        p.insertBefore(node, ref);
                     }
                     catch (ex) {
                         console.log(ex);
                     }
                 }
             });
-            Polymer.dom.flush();
 
             document.addEventListener('sajax-attach', forwardDefaultAction());
             this.addEventListener('sajax-attach', onRemoveThis);
-            this.fire('sajax-attach', {
-                parent: ref || p,
-                attached: event.detail
-            }, makePreventableEvent.call(this));
-
-
+            this.dispatchEvent(new CustomEvent('sajax-attach', {
+                bubbles: true,
+                composed: true,
+                cancelable: true,
+                detail: {
+                    parent: ref || p,
+                    attached: event.detail
+                }
+            }));
         }
     }
 
@@ -254,12 +260,12 @@
         if (!event.cancelable) {
             this.removeEventListener('sajax-attach', onRemoveThis);
 
-            var parent = Polymer.dom(this).node.parentElement;
+            var parent = this.parentElement;
             if (parent === null || parent === undefined) {
-                parent = Polymer.dom(this).node.composedParent;
+                parent = this.parentNode.host;
             }
             if (parent) {
-                Polymer.dom(parent).removeChild(this);
+                parent.removeChild(this);
             }
             else ;
         }
