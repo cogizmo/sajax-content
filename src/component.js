@@ -28,10 +28,13 @@
     class SAjaxContent extends Cogizmo {
         static get is() { return 'sajax-content'; }
 
+    //  Element LifeCycle Functions
+    // -------------------------------------------------------------------------
         constructor() {
             super();
 
             _PROPS_.set(this, Object.create(null));
+            _PROPS_.get(this).onResponse = onResponseHandler.bind(this);
         }
 
         connectedCallback() {
@@ -44,6 +47,8 @@
             super.disconnectedCallback();
         }
 
+    //  Observed Property Functions
+    // -------------------------------------------------------------------------
         get src() {
             return _PROPS_.get(this).src;
         }
@@ -96,13 +101,6 @@
      */
 
     // Component Properties
-        /**
-         * Manually causes an import of the content from the `src` property.
-         * Generally, only used when `auto` is `false`.
-         */
-        transclude() {
-            importDocument.call(this);
-        }
 
         initialize(attached) {
             var _auto = this.hasAttribute('auto');
@@ -117,7 +115,7 @@
             _PROPS_.get(this).auto = this.hasAttribute('auto');
 
             if (newValue && this.src && !this.state) {
-                loadExternalDocument.call(this);
+                this.transclude();
             }
         }
 
@@ -125,7 +123,7 @@
             _PROPS_.get(this).src = newValue;
 
             if (this._auto && newValue && !this.state) {
-                loadExternalDocument.call(this);
+                this.transclude()
             }
         }
 
@@ -140,32 +138,33 @@
                 else this.async(updateTime, this.when-chk);
             }
         }
+
+    //  Element Method Functions
+    // -------------------------------------------------------------------------
+        /**
+         * Manually causes an import of the content from the `src` property.
+         * Generally, only used when `auto` is `false`.
+         */
+        transclude() {
+            if (this.src && !this.state)
+                loadExternalDocument.call(this);
+        }
+
+    //  Event Handlers
+    // -------------------------------------------------------------------------
+        get onResponse() {
+            return _PROPS_.get(this).onResponse;
+        }
     }
     SAjaxContent.manage();
 
 // -----------------------------------------------------------------------------
-//  Element LifeCycle Functions
-// -----------------------------------------------------------------------------
-
-// -----------------------------------------------------------------------------
-//  Observed Property Functions
-// -----------------------------------------------------------------------------
-
-// -----------------------------------------------------------------------------
-//  Element Method Functions
-// -----------------------------------------------------------------------------
-    function importDocument() {
-        if (this.src && !this.state)
-            loadExternalDocument.call(this);
-    }
-
-// -----------------------------------------------------------------------------
 //  Event Listener Functions
 // -----------------------------------------------------------------------------
-    function onResponse(event) {
+    function onResponseHandler(event) {
     // Remove Event Listener
-        //console.log('Recieved Response Event');
-        this.removeEventListener('response', onResponse);
+        this.removeEventListener('response', this.onResponse);
+
     // Check for Error Conditions
         if ('object' !== typeof event.detail)
             throw new TypeError('XMLHTTPRequest did not return a detail object.');
@@ -285,7 +284,7 @@
 
     function loadExternalDocument() {
         this.state = 'requesting';
-        this.addEventListener('response', onResponse);
+        this.addEventListener('response', this.onResponse);
         fetch(this.src, {
             headers: {
                 'Content-Type': 'text/html'
