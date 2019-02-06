@@ -59,8 +59,18 @@
             return _PROPS_.get(this).auto;
         }
 
+        get select() {
+            return _PROPS_.get(this).select;
+        }
+
+        set select(value) {
+            _PROPS_.get(this).select = !!value
+                ? value
+                : '*';
+        }
+
         static get observedAttributes() {
-            return ['src', 'when', 'time', 'state', 'initialized', 'auto'];
+            return ['src', 'auto', 'select', 'time'];
         }
 
         attributeChangedCallback(name, old, value) {
@@ -69,14 +79,8 @@
                 super.attributeChangedCallback(name, old, value);
 
             switch(name) {
-            case "when":
-                break;
             case "time":
                 this.isTimeToRequest(value, old);
-                break;
-            case "state":
-                break;
-            case "initialized":
                 break;
             }
         }
@@ -129,6 +133,10 @@
             }
         }
 
+        onSelectChanged(newValue, oldValue) {
+            _PROPS_.get(this).select = !!newValue ? newValue : 'body > *';
+        }
+
         isTimeToRequest(newValue, oldValue) {
             var chk;
             if (this.when > 0 && this.start) {
@@ -177,13 +185,16 @@
             return new DOMParser().parseFromString(html, 'text/html');
         })
         .then(doc => {
+            let nodes = this.select === '*'
+                ? doc.body.children
+                : doc.body.querySelectorAll(this.select);
             document.addEventListener('sajax-success', forwardDefaultAction());
             this.addEventListener('sajax-success', onImportDocument);
             this.dispatchEvent(new CustomEvent('sajax-success', {
                 bubbles: true,
                 composed: true,
                 cancelable: true,
-                detail: doc.body.children
+                detail: nodes
             }));
         })
     }
