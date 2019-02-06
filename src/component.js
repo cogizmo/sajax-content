@@ -60,7 +60,8 @@
         }
 
         get select() {
-            return _PROPS_.get(this).select;
+            let v = _PROPS_.get(this).select;
+            return !!v ? v : '*';
         }
 
         set select(value) {
@@ -134,7 +135,7 @@
         }
 
         onSelectChanged(newValue, oldValue) {
-            _PROPS_.get(this).select = !!newValue ? newValue : 'body > *';
+            this.select = newValue;
         }
 
         isTimeToRequest(newValue, oldValue) {
