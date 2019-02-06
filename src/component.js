@@ -116,7 +116,7 @@
         onAutoChanged(newValue, oldValue) {
             _PROPS_.get(this).auto = this.hasAttribute('auto');
 
-            if (newValue && this.src && !this.state) {
+            if (this.isConnected && newValue && this.src) {
                 this.transclude();
             }
         }
@@ -124,7 +124,7 @@
         onSrcChanged(newValue, oldValue) {
             _PROPS_.get(this).src = newValue;
 
-            if (this.auto && newValue && !this.state) {
+            if (this.isConnected && this.auto && newValue) {
                 this.transclude()
             }
         }
