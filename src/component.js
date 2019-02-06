@@ -41,6 +41,8 @@
             super.connectedCallback();
 
             findLiveRegion.call(this);
+            if (this.auto && this.src)
+                this.transclude();
         }
 
         disconnectedCallback() {
@@ -122,7 +124,7 @@
         onSrcChanged(newValue, oldValue) {
             _PROPS_.get(this).src = newValue;
 
-            if (this._auto && newValue && !this.state) {
+            if (this.auto && newValue && !this.state) {
                 this.transclude()
             }
         }
